@@ -1,0 +1,33 @@
+
+name: 🚀 Auto Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: 📦 Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .   # deploys everything in the repo root (HTML, CSS, etc.)
+
+      - name: 🌐 Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
